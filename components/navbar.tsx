@@ -46,7 +46,7 @@ const CustomNavbar: React.FC = () => {
               >
                 {item.name}
                 <motion.span
-                  className="absolute bottom-0 left-0 w-full h-0.5 bg-black origin-left transform scale-x-0 transition-transform group-hover:scale-x-100"
+                  className="absolute bottom-0 left-0 w-full h-0.5 bg-foreground origin-left transform scale-x-0 transition-transform group-hover:scale-x-100"
                   initial={false}
                   transition={{ duration: 0.3 }}
                 />
