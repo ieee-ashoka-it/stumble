@@ -44,11 +44,15 @@ const Profile: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300 p-6">
+      {/* Profile Card */}
       <div className="flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-sm w-full mb-8">
-        <img
-          className="w-32 h-32 rounded-full mb-4"
-          src="https://via.placeholder.com/150" // Placeholder for avatar image
-          alt={`${profile.first_name} ${profile.last_name}'s avatar`}
+        <Avatar
+          src="https://via.placeholder.com/150" // Replace with dynamic profile image if available
+          name={`${profile.first_name} ${profile.last_name}`} // Fallback initials
+          className="w-32 h-32 mb-4"
+          size="xl"
+          color="primary"
+          bordered
         />
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-200 mb-2">{profile.first_name} {profile.last_name}</h1>
         <p className="text-lg font-semibold text-gray-700 dark:text-gray-400 mb-1">@{profile.username}</p>
@@ -59,6 +63,7 @@ const Profile: React.FC = () => {
         <p className="text-sm text-gray-500 dark:text-gray-600 mt-4"><strong>Joined on:</strong> {new Date(profile.created_at).toLocaleDateString()}</p>
       </div>
 
+      {/* Areas of Interest */}
       <div className="flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-sm w-full">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-200 mb-4">Areas of Interest</h2>
         <div className="flex flex-wrap justify-center gap-2">
