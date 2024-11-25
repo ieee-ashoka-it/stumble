@@ -2,16 +2,16 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import { useInView } from "react-intersection-observer";
-import { MessageCircle, Heart, Share2, MoreHorizontal } from "lucide-react";
+import { Trash2, Share2, MoreHorizontal, MessageCircle } from "lucide-react";
+import { Card, CardBody, Button, Avatar } from "@nextui-org/react";
 
 interface UserProfile {
   id: string;
   name: string;
   avatarUrl: string;
   description: string;
-  interests?: string[];
+  researchInterests?: string[];
   mutualConnections?: number;
 }
 
@@ -20,8 +20,9 @@ const likedUsers: UserProfile[] = [
     id: "1",
     name: "John Doe",
     avatarUrl: "https://i.pravatar.cc/150?u=1",
-    description: "Researching quantum computing and its applications in cryptography. Always excited to collaborate on innovative projects!",
-    interests: ["Quantum Computing", "Cryptography", "AI"],
+    description:
+      "Researching quantum computing and its applications in cryptography. Always excited to collaborate on innovative projects! I'm a big fan of the future of AI and quantum computing",
+    researchInterests: ["Quantum Computing", "Cryptography", "AI"],
     mutualConnections: 12,
   },
   {
@@ -29,7 +30,7 @@ const likedUsers: UserProfile[] = [
     name: "Jane Smith",
     avatarUrl: "https://i.pravatar.cc/150?u=2",
     description: "Consectetur adipiscing elit.",
-    interests: ["Machine Learning", "Data Science"],
+    researchInterests: ["Machine Learning", "Data Science"],
     mutualConnections: 5,
   },
   {
@@ -37,7 +38,7 @@ const likedUsers: UserProfile[] = [
     name: "Alice Johnson",
     avatarUrl: "https://i.pravatar.cc/150?u=3",
     description: "Sed do eiusmod tempor incididunt.",
-    interests: ["Blockchain", "Cryptography"],
+    researchInterests: ["Blockchain", "Cryptography"],
     mutualConnections: 8,
   },
   {
@@ -45,7 +46,7 @@ const likedUsers: UserProfile[] = [
     name: "Bob Brown",
     avatarUrl: "https://i.pravatar.cc/150?u=4",
     description: "Ut labore et dolore magna aliqua.",
-    interests: ["Quantum Computing", "Cryptography"],
+    researchInterests: ["Quantum Computing", "Cryptography"],
     mutualConnections: 10,
   },
   {
@@ -53,7 +54,7 @@ const likedUsers: UserProfile[] = [
     name: "Charlie White",
     avatarUrl: "https://i.pravatar.cc/150?u=5",
     description: "Ut enim ad minim veniam.",
-    interests: ["Machine Learning", "Data Science"],
+    researchInterests: ["Machine Learning", "Data Science"],
     mutualConnections: 6,
   },
   {
@@ -61,11 +62,18 @@ const likedUsers: UserProfile[] = [
     name: "David Black",
     avatarUrl: "https://i.pravatar.cc/150?u=6",
     description: "Quis nostrud exercitation ullamco laboris.",
-    interests: ["Quantum Computing", "Cryptography"],
+    researchInterests: ["Quantum Computing", "Cryptography"],
     mutualConnections: 9,
   },
   // Add more users as needed
 ];
+
+const CHARACTER_LIMIT = 150; // Adjust this number as needed
+
+const truncateText = (text: string, limit: number) => {
+  if (text.length <= limit) return text;
+  return text.slice(0, limit).trim() + "...";
+};
 
 const MyMatches: React.FC = () => {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
@@ -87,14 +95,19 @@ const MyMatches: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen md:pt-12 bg-gradient-to-b from-background to-gray-50 dark:from-background dark:to-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen md:pt-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
         >
-          <h1 className="text-4xl font-bold text-center mb-2">Your Likes</h1>
+          <h1 className="text-4xl font-bold text-center mb-2">
+            Your Research Matches
+          </h1>
+          <p className="text-center text-default-500">
+            Connect with researchers who share your interests
+          </p>
         </motion.div>
 
         <motion.div
@@ -102,91 +115,109 @@ const MyMatches: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="space-y-6"
         >
           <AnimatePresence>
             {likedUsers.map((user) => (
-              <motion.div
+              <Card
                 key={user.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                as={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="border-none bg-background/60 dark:bg-default-100/50 w-full"
+                shadow="sm"
               >
-                {/* Card Header */}
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center space-x-4">
+                <CardBody className="p-6">
+                  <div className="flex flex-col md:flex-row md:items-start gap-6">
+                    {/* Left Column - Avatar and Basic Info */}
+                    <div className="flex flex-col items-center md:items-start space-y-4 md:w-48">
                       <div className="relative">
-                        <Image
+                        <Avatar
                           src={user.avatarUrl}
-                          alt={user.name}
-                          width={60}
-                          height={60}
-                          className="rounded-full ring-2 ring-primary/20"
+                          size="lg"
+                          isBordered
+                          className="w-24 h-24 text-large"
                         />
-                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-white" />
+                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-success rounded-full ring-2 ring-white" />
                       </div>
-                      <div>
+                      <div className="text-center md:text-left">
                         <h2 className="font-semibold text-xl">{user.name}</h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                        <p className="text-sm text-default-500">
                           {user.mutualConnections} mutual connections
                         </p>
                       </div>
                     </div>
-                    <button className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-                      <MoreHorizontal className="w-5 h-5" />
-                    </button>
-                  </div>
 
-                  {/* Research Interests */}
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-2">
-                      {user.interests?.map((interest, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                    {/* Right Column - Main Content */}
+                    <div className="flex-1 space-y-4">
+                      {/* Research Interests */}
+                      <div className="flex flex-wrap gap-2">
+                        {user.researchInterests?.map((interest, index) => (
+                          <span
+                            key={index}
+                            className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                          >
+                            {interest}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Description */}
+                      <motion.div layout>
+                        <p className="text-default-500 text-sm">
+                          {expandedIds.has(user.id)
+                            ? user.description
+                            : truncateText(user.description, CHARACTER_LIMIT)}
+                        </p>
+                        {user.description.length > CHARACTER_LIMIT && (
+                          <button
+                            onClick={() => toggleExpand(user.id)}
+                            className="text-primary text-sm font-medium mt-2 hover:underline"
+                          >
+                            {expandedIds.has(user.id)
+                              ? "Show less"
+                              : "Show more"}
+                          </button>
+                        )}
+                      </motion.div>
+
+                      {/* Action Buttons */}
+                      <div className="flex flex-wrap gap-3 pt-4 border-t border-default-200">
+                        <Button
+                          className="flex items-center gap-2"
+                          color="primary"
+                          variant="flat"
+                          startContent={<MessageCircle className="w-4 h-4" />}
                         >
-                          {interest}
-                        </span>
-                      ))}
+                          Message
+                        </Button>
+                        <Button
+                          className="flex items-center gap-2"
+                          color="danger"
+                          variant="flat"
+                          startContent={<Trash2 className="w-4 h-4" />}
+                        >
+                          Remove
+                        </Button>
+                        <Button
+                          className="flex items-center gap-2"
+                          color="secondary"
+                          variant="flat"
+                          startContent={<Share2 className="w-4 h-4" />}
+                        >
+                          Share
+                        </Button>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Description */}
-                  <motion.div layout className="mb-4">
-                    <p
-                      className={`text-gray-600 dark:text-gray-300 text-sm ${
-                        expandedIds.has(user.id) ? "" : "line-clamp-2"
-                      }`}
-                    >
-                      {user.description}
-                    </p>
-                    <button
-                      onClick={() => toggleExpand(user.id)}
-                      className="text-primary text-sm font-medium mt-1 hover:underline"
-                    >
-                      {expandedIds.has(user.id) ? "Show less" : "Show more"}
-                    </button>
-                  </motion.div>
-
-                  {/* Action Buttons */}
-                  <div className="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-gray-700">
-                    <button className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
-                      <MessageCircle className="w-5 h-5" />
-                      <span className="text-sm">Message</span>
-                    </button>
-                    <button className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
-                      <Heart className="w-5 h-5" />
-                      <span className="text-sm">Connect</span>
-                    </button>
-                    <button className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
-                      <Share2 className="w-5 h-5" />
-                      <span className="text-sm">Share</span>
-                    </button>
+                    {/* Options Button */}
+                    <Button isIconOnly variant="light" size="sm">
+                      <MoreHorizontal className="w-5 h-5" />
+                    </Button>
                   </div>
-                </div>
-              </motion.div>
+                </CardBody>
+              </Card>
             ))}
           </AnimatePresence>
         </motion.div>

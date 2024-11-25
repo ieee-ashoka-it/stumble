@@ -11,16 +11,17 @@
 }
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
 
-:root {
+/* /* :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #10141b;
+    --background: #0d1319;
     --foreground: #ededed;
-  }
+  } 
+
   h1,
   h2,
   h3,
@@ -29,11 +30,19 @@
   h6 {
     color: #fde047;
   }
+} */
+
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+}
+
+.dark {
+  --color-background: #0d1319;
+  --color-foreground: #ededed;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
 

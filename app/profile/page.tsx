@@ -71,9 +71,9 @@ const Settings: React.FC = () => {
   if (!profile) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300 p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background transition-colors duration-300 p-6">
       {/* Profile Header */}
-      <div className="flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-md w-full mb-8">
+      <div className="flex flex-col items-center rounded-lg shadow-lg p-6 max-w-md w-full mb-8">
         <Avatar
           src="https://via.placeholder.com/150"
           name={`${formData.first_name || ""} ${formData.last_name || ""}`}
@@ -89,7 +89,7 @@ const Settings: React.FC = () => {
       </div>
 
       {/* Settings Form */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-md w-full">
+      <div className="rounded-lg shadow-lg p-6 max-w-md w-full">
         <form>
           <Input
             label="First Name"

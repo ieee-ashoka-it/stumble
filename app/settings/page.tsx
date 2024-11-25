@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { Input, Textarea, Avatar } from "@nextui-org/react";
+import { Input, Textarea, Avatar, Button } from "@nextui-org/react";
 
 const supabase = createClient();
 
@@ -63,9 +63,9 @@ const Settings: React.FC = () => {
   if (!profile) return <div className="flex items-center justify-center h-screen">Loading...</div>;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+    <div className="flex items-center bg-background justify-center min-h-screen p-6">
       {/* Settings Container */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-screen-md w-full relative">
+      <div className="rounded-2xl shadow-2xl p-8 max-w-screen-md w-full relative">
         {/* Profile Header */}
         <div className="text-center mb-8 pt-16"> {/* Added padding to avoid overlap */}
           <div className="w-36 h-36 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white shadow-lg">
@@ -182,13 +182,14 @@ const Settings: React.FC = () => {
             />
           </div>
 
-          <button
+          <Button
             type="button"
-            className="w-full py-3 font-bold text-lg rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition"
+            className="w-full py-3 font-bold text-lg rounded-lg transition"
+            color="primary"
             onClick={saveChanges}
           >
             Save Changes
-          </button>
+          </Button>
         </form>
       </div>
     </div>
