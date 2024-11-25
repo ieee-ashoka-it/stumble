@@ -4,14 +4,21 @@ import { useState } from "react";
 import { motion, useTransform, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import IEEELogo from "@/public/images/logo.png";
-import { getPages } from "./pages";
+
+// Define the navigation pages, including the new Settings link
+export function getPages() {
+  return [
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ];
+}
 
 const CustomNavbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0.8]);
-  const pages = getPages();
-  
+  const pages = getPages(); // Get the updated pages
 
   return (
     <motion.header
@@ -20,6 +27,7 @@ const CustomNavbar: React.FC = () => {
     >
       <nav className="container mx-auto px-4 sm:px-6 py-2">
         <div className="flex justify-between items-center">
+          {/* Logo Section */}
           <a href="/">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -35,6 +43,8 @@ const CustomNavbar: React.FC = () => {
               />
             </motion.div>
           </a>
+
+          {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-1">
             {pages.map((item) => (
               <motion.a
@@ -53,6 +63,8 @@ const CustomNavbar: React.FC = () => {
               </motion.a>
             ))}
           </div>
+
+          {/* Mobile Menu Button */}
           <div className="md:hidden">
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -65,6 +77,8 @@ const CustomNavbar: React.FC = () => {
           </div>
         </div>
       </nav>
+
+      {/* Mobile Navigation Menu */}
       {isMenuOpen && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
