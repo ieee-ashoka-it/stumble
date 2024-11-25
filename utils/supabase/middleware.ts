@@ -37,7 +37,28 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const protectedPages = ["/events", "/photos", "/photos/create", "/photos/edit/"];
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("is_onboarded")
+    .eq("user_id", user?.id)
+    .single();
+
+  if (error) {
+    console.error(error);
+  }
+
+  const isOnboarded = data?.is_onboarded;
+
+  const onboardingPages = ["/matching", "/matches", "/profile", "/feed", "/settings"];
+
+  const protectedPages = [
+    "/matching",
+    "/matches",
+    "/profile",
+    "/contact",
+    "/onboarding",
+    "/",
+  ];
 
   const prohibitedPages = ["/login"];
 
@@ -58,6 +79,16 @@ export async function updateSession(request: NextRequest) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  if (
+    user &&
+    !isOnboarded &&
+    onboardingPages.includes(request.nextUrl.pathname)
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/onboarding";
     return NextResponse.redirect(url);
   }
 
