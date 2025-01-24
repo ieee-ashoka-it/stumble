@@ -3,8 +3,12 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Trash2, Share2, MoreHorizontal, MessageCircle } from "lucide-react";
-import { Card, CardBody, Button, Avatar } from "@nextui-org/react";
+import {
+  Trash2,
+  MessageCircle,
+  ChevronRight,
+} from "lucide-react";
+import { Card, CardBody, Button, Avatar, Chip } from "@nextui-org/react";
 
 interface UserProfile {
   id: string;
@@ -95,7 +99,7 @@ const MyMatches: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen md:pt-12">
+    <div className="min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -154,12 +158,13 @@ const MyMatches: React.FC = () => {
                       {/* Research Interests */}
                       <div className="flex flex-wrap gap-2">
                         {user.researchInterests?.map((interest, index) => (
-                          <span
+                          <Chip
                             key={index}
-                            className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                            color="primary"
+                            variant="flat"
                           >
                             {interest}
-                          </span>
+                          </Chip>
                         ))}
                       </div>
 
@@ -183,37 +188,41 @@ const MyMatches: React.FC = () => {
                       </motion.div>
 
                       {/* Action Buttons */}
-                      <div className="flex flex-wrap gap-3 pt-4 border-t border-default-200">
+                      <div className="flex flex-wrap justify-between gap-3 pt-4 border-t border-default-200">
                         <Button
                           className="flex items-center gap-2"
                           color="primary"
-                          variant="flat"
+                          variant="light"
                           startContent={<MessageCircle className="w-4 h-4" />}
                         >
-                          Message
+                          Contact
                         </Button>
                         <Button
                           className="flex items-center gap-2"
                           color="danger"
-                          variant="flat"
+                          variant="light"
                           startContent={<Trash2 className="w-4 h-4" />}
-                        >
-                          Remove
-                        </Button>
-                        <Button
+                          isIconOnly
+                        ></Button>
+                        {/* <Button
                           className="flex items-center gap-2"
                           color="secondary"
-                          variant="flat"
+                          variant="light"
                           startContent={<Share2 className="w-4 h-4" />}
                         >
                           Share
-                        </Button>
+                        </Button> */}
                       </div>
                     </div>
 
                     {/* Options Button */}
-                    <Button isIconOnly variant="light" size="sm">
-                      <MoreHorizontal className="w-5 h-5" />
+                    <Button
+                      isIconOnly
+                      variant="light"
+                      className="text-default-600"
+                      size="sm"
+                    >
+                      <ChevronRight className="w-5 h-5" />
                     </Button>
                   </div>
                 </CardBody>

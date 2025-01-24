@@ -6,15 +6,14 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import IEEELogo from "@/public/images/logo.png";
 import {
-  Calendar,
-  ChevronRight,
   NotebookPen,
   Users,
-  Home,
+  GalleryHorizontalEnd,
   LogIn,
   Settings,
   Sun,
   Moon,
+  ChevronsRight,
 } from "lucide-react";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { Avatar } from "@nextui-org/react";
@@ -42,11 +41,10 @@ export const Sidebar = ({
 
   const pages = user
     ? [
-        { name: "Swipe", href: "/matching", icon: Calendar },
+        { name: "Swipe", href: "/matching", icon: GalleryHorizontalEnd },
         { name: "My Matches", href: "/matches", icon: Users },
       ]
     : [
-        { name: "Home", href: "/", icon: Home },
         { name: "Login", href: "/login", icon: LogIn },
         { name: "Register", href: "/register", icon: NotebookPen },
       ];
@@ -56,15 +54,15 @@ export const Sidebar = ({
   return (
     <div
       className={cn(
-        "fixed left-0 top-0 h-screen bg-background opacity-100 z-50 border-r transition-all duration-400",
+        "hidden md:block fixed left-0 top-0 h-screen bg-background opacity-100 z-50 border-r transition-all duration-400",
         isExpanded ? "w-80" : "w-20"
       )}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
       <nav className="flex flex-col p-2 h-full">
-        <div className="flex h-20 items-center">
-          <ChevronRight
+        <div className="flex mt-5 h-10 items-center">
+          <ChevronsRight
             className={cn(
               "h-full w-full transition-transform duration-200",
               isExpanded && "rotate-180"
